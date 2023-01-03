@@ -15,7 +15,7 @@
   align-items: center;
   /* justify-content: center; */
   /* gap:%; */
-  border-color: #ffb26b;
+  border-color: #5bc0f8;
   border-width: thick;
   border-style: solid;
 }
@@ -26,7 +26,7 @@
   font-weight: 400;
   text-align: center;
   font-size: 3rem;
-  color: #ffb26b;
+  color: #5bc0f8;
   white-space: nowrap;
   text-decoration: underline;
   box-sizing: border-box;
@@ -38,7 +38,7 @@
   font-weight: 400;
   text-align: center;
   font-size: 3rem;
-  color: #ffb26b;
+  color: #5bc0f8;
   white-space: nowrap;
   box-sizing: border-box;
   display: inline-block;
@@ -46,7 +46,7 @@
 }
 
 .input-name {
-  border: 2% solid #ffb26b;
+  border: 2% solid #5bc0f8;
   border-radius: 4%;
   height: 20%;
   width: 20%;
@@ -55,28 +55,28 @@
   font-weight: 400;
   text-align: center;
   font-size: 1.5rem;
-  color: #ff7b54;
+  color: #0081c9;
   white-space: nowrap;
   box-sizing: border-box;
   display: inline-block;
-  background-color: #ffd56f;
+  background-color: #86e5ff;
 }
 
 .name-button {
   position: relative;
   height: 10%;
   width: 10%;
-  border: 2% solid #ffb26b;
+  border: 2% solid #5bc0f8;
   border-radius: 5%;
   font-family: "Inter";
   font-style: normal;
   font-weight: 400;
   text-align: center;
   font-size: 1.5rem;
-  color: #ff7b54;
+  color: #0081c9;
   white-space: nowrap;
   box-sizing: border-box;
   display: inline-block;
-  background-color: #ffd56f;
+  background-color: #86e5ff;
   top: 10%;
 }

@@ -6,11 +6,12 @@ export default function WelcomeScreen(props) {
     props.setName(value);
   }
   function sendName() {
-    if (props.stompClient) {
-      props.RPSDInfo.name = props.name;
-      props.RPSDInfo.state = "lobbyscr";
-      props.SetRPSDInfo({ ...props.RPSDInfo });
-    }
+    console.log(props);
+    props.RPSDInfo.name = props.name;
+    props.RPSDInfo.state = "lobbyscr";
+    props.RPSDInfo.connected = true;
+    props.setRPSDInfo({ ...props.RPSDInfo });
+    console.log("CONNECTED!");
   }
   return (
     <div className="welcome-screen-background">
