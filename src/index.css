@@ -1,0 +1,82 @@
+.welcome-screen-background {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.welcome-screen-outer-background {
+  display: flex;
+  flex-direction: column;
+  height: 50vh;
+  width: 50%;
+  align-items: center;
+  /* justify-content: center; */
+  /* gap:%; */
+  border-color: #ffb26b;
+  border-width: thick;
+  border-style: solid;
+}
+
+.rpsd-text {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  text-align: center;
+  font-size: 3rem;
+  color: #ffb26b;
+  white-space: nowrap;
+  text-decoration: underline;
+  box-sizing: border-box;
+  display: inline-block;
+}
+.name-prompt-text {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  text-align: center;
+  font-size: 3rem;
+  color: #ffb26b;
+  white-space: nowrap;
+  box-sizing: border-box;
+  display: inline-block;
+  padding-bottom: 5%;
+}
+
+.input-name {
+  border: 2% solid #ffb26b;
+  border-radius: 4%;
+  height: 20%;
+  width: 20%;
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  text-align: center;
+  font-size: 1.5rem;
+  color: #ff7b54;
+  white-space: nowrap;
+  box-sizing: border-box;
+  display: inline-block;
+  background-color: #ffd56f;
+}
+
+.name-button {
+  position: relative;
+  height: 10%;
+  width: 10%;
+  border: 2% solid #ffb26b;
+  border-radius: 5%;
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  text-align: center;
+  font-size: 1.5rem;
+  color: #ff7b54;
+  white-space: nowrap;
+  box-sizing: border-box;
+  display: inline-block;
+  background-color: #ffd56f;
+  top: 10%;
+}
