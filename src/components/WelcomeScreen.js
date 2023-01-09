@@ -1,17 +1,86 @@
 import React, { useEffect, useState } from "react";
+var Filter = require("bad-words"),
+  filter = new Filter();
 
 export default function WelcomeScreen(props) {
+  const [name, setName] = useState("");
   function handleName(event) {
-    const { value } = event.target;
-    props.setName(value);
+    let { value } = event.target;
+    console.log("Type of: " + value + typeof value);
+    if (filter.isProfane(value)) {
+      value = "";
+    }
+    if (value.length > 20) {
+      return;
+    }
+    setName(value);
   }
   function sendName() {
-    console.log(props);
-    props.RPSDInfo.name = props.name;
-    props.RPSDInfo.state = "lobbyscr";
-    props.RPSDInfo.connected = true;
-    props.setRPSDInfo({ ...props.RPSDInfo });
-    console.log("CONNECTED!");
+    console.log("MAP ITEMS: " + [...props.playersStatus.entries()]);
+    if (props.playersStatus.get(name) || name === "" || name === " ") {
+      return;
+    }
+    console.log("pressed submit. name is: " + name);
+
+    props.stompClient.subscribe(
+      "/user/" + name + "/private",
+      props.onPrivateRequestReceived
+    );
+    props.stompClient.subscribe(
+      "/user/" + name + "/updatePlayers",
+      props.updatePlayers
+    );
+    props.stompClient.subscribe(
+      "/user/" + name + "/challenged",
+      props.onChallengedPlayer
+    );
+
+    props.stompClient.subscribe(
+      "/user/" + name + "/cancelledChallenge",
+      props.cancelledChallenge
+    );
+    props.stompClient.subscribe(
+      "/user/" + name + "/declinedChallenge",
+      props.declinedChallenge
+    );
+    props.stompClient.subscribe(
+      "/user/" + name + "/acceptedChallenge",
+      props.acceptedChallenge
+    );
+    props.stompClient.subscribe(
+      "/user/" + name + "/sendWager",
+      props.receiveWager
+    );
+    props.stompClient.subscribe(
+      "/user/" + name + "/startGame",
+      props.startGame
+    );
+    props.stompClient.subscribe(
+      "/user/" + name + "/sendMove",
+      props.receiveMove
+    );
+    let newRPSDInfo = {
+      ...props.RPSDInfo,
+      name: name,
+      state: "lobbyscr",
+      connected: true,
+    };
+
+    props.setName(name);
+    props.setState("lobbyscr");
+    props.stompClient.send(
+      "/app/global",
+      {},
+      JSON.stringify({ ...newRPSDInfo })
+    );
+
+    props.stompClient.send(
+      "/app/private-updatePlayers",
+      {},
+      JSON.stringify(newRPSDInfo)
+    );
+    props.setRPSDInfo(newRPSDInfo);
+    props.RPSDInfoRef.current = newRPSDInfo;
   }
   return (
     <div className="welcome-screen-background">
@@ -22,7 +91,7 @@ export default function WelcomeScreen(props) {
           type="text"
           className="input-name"
           placeholder="enter the name."
-          value={props.name}
+          value={name}
           onChange={handleName}
         />
         <button
