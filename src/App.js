@@ -161,7 +161,7 @@ function App() {
     let newRPSDInfo = {
       ...RPSDInfoRef.current,
       state: "wagerscr",
-      acceptedChallenge: payloadData.acceptedChallenge,
+      receivedMove: payloadData.receivedMove,
       player2Info: {
         ...payloadData.player2Info,
       },
@@ -303,6 +303,7 @@ function App() {
             ...RPSDInfoRef.current,
             roundWinner: payloadData.roundWinner,
             winner: payloadData.winner,
+            numTurns: payloadData.numTurns,
             player1Info: {
               ...RPSDInfoRef.current.player1Info,
               score: payloadData.player1Info.score,
@@ -311,8 +312,15 @@ function App() {
               ...payloadData.player2Info,
             },
           };
+    if (payloadData.sender != RPSDInfoRef.current.name) {
+      newRPSDInfo.receivedMove = true;
+    }
     setRPSDInfo(newRPSDInfo);
     RPSDInfoRef.current = { ...newRPSDInfo };
+
+    if (payloadData.winner != "") {
+      setState("endscr");
+    }
   }
   const connect = () => {
     let Sock = new SockJS("http://localhost:8080/ws");
@@ -353,7 +361,7 @@ function App() {
         cancelledChallenge={cancelledChallenge}
         declinedChallenge={declinedChallenge}
         onGlobalRequestReceived={onGlobalRequestReceived}
-        acceptedChallenge={acceptedChallenge}
+        receivedMove={receivedMove}
         RPSDInfoRef={RPSDInfoRef}
         receiveWager={receiveWager}
         startGame={startGame}

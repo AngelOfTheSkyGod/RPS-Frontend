@@ -78,7 +78,7 @@ export default function GameScreen(props) {
     <div className="lobby-background">
       {props.RPSDInfoRef.current.roundWinner !== "" ? (
         <div>
-          <h1>
+          <h1 className="name-prompt-text">
             The round winner is : {props.RPSDInfoRef.current.roundWinner} !
           </h1>
         </div>

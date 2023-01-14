@@ -174,7 +174,7 @@ export default function LobbyScreen(props) {
       ...props.RPSDInfoRef.current,
       sender: props.name,
       receiver: props.RPSDInfoRef.current.player1Info.name,
-      acceptChallenge: true,
+      receivedMove: true,
       state: "wagerscr",
       player2Info: {
         decision: "",
