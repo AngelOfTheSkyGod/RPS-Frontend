@@ -35,6 +35,8 @@ export default function LobbyScreen(props) {
           decision: "",
           move: "",
           score: 0,
+          receivedMove: false,
+
           name: "",
         },
       });
@@ -44,6 +46,8 @@ export default function LobbyScreen(props) {
           decision: "",
           move: "",
           score: 0,
+          receivedMove: false,
+
           name: "",
         },
       };
@@ -85,6 +89,8 @@ export default function LobbyScreen(props) {
       player1Info: {
         decision: "",
         move: "",
+        receivedMove: false,
+
         score: 0,
         name: props.name,
       },
@@ -100,6 +106,8 @@ export default function LobbyScreen(props) {
       player1Info: {
         decision: "",
         move: "",
+        receivedMove: false,
+
         score: 0,
         name: props.name,
       },
@@ -111,6 +119,8 @@ export default function LobbyScreen(props) {
       receiver: challengedPlayer,
       player1Info: {
         decision: "",
+        receivedMove: false,
+
         move: "",
         score: 0,
         name: props.name,
@@ -156,6 +166,8 @@ export default function LobbyScreen(props) {
       player1Info: {
         decision: "",
         move: "",
+        receivedMove: false,
+
         score: 0,
         name: "",
       },
@@ -174,10 +186,10 @@ export default function LobbyScreen(props) {
       ...props.RPSDInfoRef.current,
       sender: props.name,
       receiver: props.RPSDInfoRef.current.player1Info.name,
-      receivedMove: true,
       state: "wagerscr",
       player2Info: {
         decision: "",
+        receivedMove: false,
         move: "",
         score: 0,
         name: props.name,

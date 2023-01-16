@@ -7,7 +7,6 @@ import WagerScreen from "./components/WagerScreen";
 import GameScreen from "./components/GameScreen";
 import GameEndScreen from "./components/GameEndScreen";
 var stompClient = null;
-let connected = false;
 
 function App() {
   const [RPSDInfo, setRPSDInfo] = useState({
@@ -26,12 +25,14 @@ function App() {
       move: "",
       score: 0,
       name: "",
+      receivedMove: false,
     },
     player2Info: {
       decision: "",
       move: "",
       score: 0,
       name: "",
+      receivedMove: false,
     },
     roundWinner: "",
     winner: "",
@@ -48,17 +49,82 @@ function App() {
     console.log(err);
   };
 
+  useEffect(() => {
+    function windowClose(event) {
+      stompClient.send(
+        "/app/leaveGame",
+        {},
+        JSON.stringify({
+          ...RPSDInfoRef.current,
+        })
+      );
+      setState("startscr");
+      event.preventDefault();
+
+      return (event.returnValue = "Are you sure you want to close?");
+    }
+    window.addEventListener("beforeunload", windowClose);
+    return () => {
+      window.removeEventListener("beforeunload", windowClose);
+    };
+  }, []);
+
+  function playerHasLeft(payload) {
+    let payloadData = JSON.parse(payload.body);
+    if (
+      payloadData.name === RPSDInfoRef.current.player1Info.name ||
+      payloadData.name === RPSDInfoRef.current.player2Info.name ||
+      payloadData.name === RPSDInfoRef.current.receiver ||
+      payloadData.name === RPSDInfoRef.current.sender
+    ) {
+      let newRPSDInfo = {
+        ...RPSDInfoRef.current,
+        state: "lobbyscr",
+        receiver: "",
+        sender: "",
+        challenging: false,
+        challenged: false,
+        acceptChallenge: false,
+        numTurns: 0,
+        player1Info: {
+          decision: "",
+          move: "",
+          score: 0,
+          name: "",
+          receivedMove: false,
+        },
+        player2Info: {
+          decision: "",
+          move: "",
+          score: 0,
+          name: "",
+          receivedMove: false,
+        },
+        roundWinner: "",
+        winner: "",
+      };
+      time.current = 10;
+      setRPSDInfo({ ...newRPSDInfo });
+      RPSDInfoRef.current = { ...newRPSDInfo };
+      setState("lobbyscr");
+    }
+
+    if (playersStatus.has(payloadData.name)) {
+      playersStatus.delete(payloadData.name);
+    }
+    setPlayersStatus(new Map());
+    updatePlayers(payload);
+  }
+
   function updatePlayers(payload) {
     let payloadData = JSON.parse(payload.body);
-    let playersString = JSON.stringify(payloadData.players);
-    // let plyrs = playersString.split(",");
     let newPlayerList = payloadData.players;
-    let newPlayersStatus = new Map(playersStatus);
+    console.log("Received: " + newPlayerList);
+
+    let newPlayersStatus = new Map();
 
     newPlayerList.forEach((item, index) => {
-      if (!newPlayersStatus.has(item)) {
-        newPlayersStatus.set(item, true);
-      }
+      newPlayersStatus.set(item, true);
     });
     playersStatus = newPlayersStatus;
     setRPSDInfo({ ...RPSDInfoRef.current, players: [...newPlayerList] });
@@ -72,35 +138,12 @@ function App() {
   }
 
   function onGlobalRequestReceived(payload) {
-    let payloadData = JSON.parse(payload.body);
     console.log(
       "joined! fetching players." +
         "obj: " +
         JSON.stringify(RPSDInfoRef.current)
     );
-    if (!RPSDInfoRef.current.connected) {
-      updatePlayers(payload);
-      console.log("fetching lobby on join.");
-      return;
-    }
-    if (!playersStatus.has(payloadData.name) && payloadData.connected) {
-      updatePlayers(payload);
-    } else if (playersStatus.has(payloadData.name) && !payloadData.connected) {
-      playerList.splice(playerList.indexOf(payloadData.name), 1);
-      playersStatus.delete(payloadData.name);
-      setPlayerList(...playerList);
-      setPlayersStatus(new Map(playersStatus));
-      console.log("removed player: " + payloadData.name);
-    } else if (
-      (playersStatus.has(payloadData.name) &&
-        payloadData.challenged &&
-        payloadData.connected) ||
-      payloadData.challenging
-    ) {
-      console.log("this player has been challenged: " + payloadData.name);
-      playersStatus.set(payloadData.name, false);
-      setPlayersStatus(new Map(playersStatus));
-    }
+    updatePlayers(payload);
   }
 
   function cancelledChallenge(payload) {
@@ -115,6 +158,7 @@ function App() {
         move: "",
         score: 0,
         name: payloadData.sender,
+        receivedMove: false,
       },
     });
     RPSDInfoRef.current = {
@@ -126,6 +170,7 @@ function App() {
         move: "",
         score: 0,
         name: payloadData.sender,
+        receivedMove: false,
       },
     };
   }
@@ -141,6 +186,7 @@ function App() {
         move: "",
         score: 0,
         name: "",
+        receivedMove: false,
       },
     });
     RPSDInfoRef.current = {
@@ -152,6 +198,7 @@ function App() {
         move: "",
         score: 0,
         name: "",
+        receivedMove: false,
       },
     };
   }
@@ -161,7 +208,6 @@ function App() {
     let newRPSDInfo = {
       ...RPSDInfoRef.current,
       state: "wagerscr",
-      receivedMove: payloadData.receivedMove,
       player2Info: {
         ...payloadData.player2Info,
       },
@@ -284,44 +330,28 @@ function App() {
   function receiveMove(payload) {
     let payloadData = JSON.parse(payload.body);
 
-    let newRPSDInfo =
-      payloadData.player1Info.name !== RPSDInfoRef.current.name
-        ? {
-            ...RPSDInfoRef.current,
-            roundWinner: payloadData.roundWinner,
-            winner: payloadData.winner,
-            numTurns: payloadData.numTurns,
-            player1Info: {
-              ...payloadData.player1Info,
-            },
-            player2Info: {
-              ...RPSDInfoRef.current.player2Info,
-              score: payloadData.player2Info.score,
-            },
-          }
-        : {
-            ...RPSDInfoRef.current,
-            roundWinner: payloadData.roundWinner,
-            winner: payloadData.winner,
-            numTurns: payloadData.numTurns,
-            player1Info: {
-              ...RPSDInfoRef.current.player1Info,
-              score: payloadData.player1Info.score,
-            },
-            player2Info: {
-              ...payloadData.player2Info,
-            },
-          };
-    if (payloadData.sender != RPSDInfoRef.current.name) {
-      newRPSDInfo.receivedMove = true;
+    let newRPSDInfo = {
+      ...RPSDInfoRef.current,
+      player1Info: {
+        ...payloadData.player1Info,
+      },
+      player2Info: {
+        ...payloadData.player2Info,
+      },
+      roundWinner: payloadData.roundWinner,
+      winner: payloadData.winner,
+      numTurns: payloadData.numTurns,
+    };
+
+    if (payloadData.winner !== "") {
+      setState("endscr");
+      newRPSDInfo.state = "endscr";
+      console.log("winnter decided: " + payloadData.winner);
     }
     setRPSDInfo(newRPSDInfo);
     RPSDInfoRef.current = { ...newRPSDInfo };
-
-    if (payloadData.winner != "") {
-      setState("endscr");
-    }
   }
+
   const connect = () => {
     let Sock = new SockJS("http://localhost:8080/ws");
     stompClient = over(Sock);
@@ -361,11 +391,12 @@ function App() {
         cancelledChallenge={cancelledChallenge}
         declinedChallenge={declinedChallenge}
         onGlobalRequestReceived={onGlobalRequestReceived}
-        receivedMove={receivedMove}
+        acceptedChallenge={acceptedChallenge}
         RPSDInfoRef={RPSDInfoRef}
         receiveWager={receiveWager}
         startGame={startGame}
         receiveMove={receiveMove}
+        playerHasLeft={playerHasLeft}
       />
     )) ||
     (state === "lobbyscr" && (
@@ -402,6 +433,24 @@ function App() {
     )) ||
     (state === "gamescr" && (
       <GameScreen
+        name={name}
+        setName={setName}
+        state={state}
+        setState={setState}
+        RPSDInfo={RPSDInfo}
+        setRPSDInfo={setRPSDInfo}
+        stompClient={stompClient}
+        playerList={playerList}
+        setPlayerList={setPlayerList}
+        playersStatus={playersStatus}
+        setPlayersStatus={setPlayersStatus}
+        RPSDInfoRef={RPSDInfoRef}
+        time={time}
+        receiveMove={receiveMove}
+      />
+    )) ||
+    (state === "endscr" && (
+      <GameEndScreen
         name={name}
         setName={setName}
         state={state}

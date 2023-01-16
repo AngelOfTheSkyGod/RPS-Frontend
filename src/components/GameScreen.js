@@ -60,10 +60,12 @@ export default function GameScreen(props) {
         player1Info: {
           ...props.RPSDInfoRef.current.player1Info,
           move: "",
+          receivedMove: false,
         },
         player2Info: {
           ...props.RPSDInfoRef.current.player2Info,
           move: "",
+          receivedMove: false,
         },
         roundWinner: "",
       };

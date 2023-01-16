@@ -59,6 +59,8 @@ export default function WelcomeScreen(props) {
       "/user/" + name + "/sendMove",
       props.receiveMove
     );
+    props.stompClient.subscribe("/requests/leaver", props.playerHasLeft);
+
     let newRPSDInfo = {
       ...props.RPSDInfo,
       name: name,
