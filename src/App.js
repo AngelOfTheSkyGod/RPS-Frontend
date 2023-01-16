@@ -353,7 +353,7 @@ function App() {
   }
 
   const connect = () => {
-    let Sock = new SockJS("http://localhost:8080/ws");
+    let Sock = new SockJS("https://rps-application.herokuapp.com/ws");
     stompClient = over(Sock);
     stompClient.connect({}, onConnected, onError);
   };
