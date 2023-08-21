@@ -9,9 +9,6 @@ export default function WagerScreen(props) {
   function handleChoice(event) {
     let { value } = event.target;
     console.log("Type of: " + value + typeof value);
-    if (filter.isProfane(value)) {
-      value = "";
-    }
     if (value.length > 60) {
       return;
     }
@@ -20,6 +17,10 @@ export default function WagerScreen(props) {
 
   function sendChoice() {
     if (choice.length <= 1) {
+      return;
+    }
+    if (filter.isProfane(choice)) {
+      setChoice("");
       return;
     }
     let newRPSDInfo =

@@ -7,15 +7,17 @@ export default function WelcomeScreen(props) {
   function handleName(event) {
     let { value } = event.target;
     console.log("Type of: " + value + typeof value);
-    if (filter.isProfane(value)) {
-      value = "";
-    }
+   
     if (value.length > 20) {
       return;
     }
     setName(value);
   }
   function sendName() {
+    if (filter.isProfane(name)) {
+      setName("");
+      return;
+    }
     console.log("MAP ITEMS: " + [...props.playersStatus.entries()]);
     if (props.playersStatus.get(name) || name === "" || name === " ") {
       return;
@@ -26,6 +28,7 @@ export default function WelcomeScreen(props) {
       "/user/" + name + "/private",
       props.onPrivateRequestReceived
     );
+   
     props.stompClient.subscribe(
       "/user/" + name + "/updatePlayers",
       props.updatePlayers
@@ -58,6 +61,11 @@ export default function WelcomeScreen(props) {
     props.stompClient.subscribe(
       "/user/" + name + "/sendMove",
       props.receiveMove
+    );
+
+    props.stompClient.subscribe(
+      "/user/" + name + "/ping",
+      props.handlePing
     );
     props.stompClient.subscribe("/requests/leaver", props.playerHasLeft);
 

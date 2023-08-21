@@ -9,7 +9,7 @@ export default function GameEndScreen(props) {
       : props.RPSDInfoRef.current.player2Info.decision;
 
   if (props.RPSDInfoRef.current.winner === "no one") {
-    winningStr = "tie!";
+    winningStr = "No one won, choosing random choice: \n" + props.RPSDInfoRef.current.roundWinner;
   }
   function resetGame() {
     let newRPSDInfo = {
@@ -58,8 +58,9 @@ export default function GameEndScreen(props) {
         onClick={resetGame}
       >
         {" "}
-        return to lobby{" "}
+        Lobby{" "}
       </button>
+      
     </div>
   );
 }

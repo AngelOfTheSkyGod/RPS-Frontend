@@ -11,7 +11,7 @@
   display: flex;
   flex-direction: column;
   height: 50vh;
-  width: 50%;
+  width: 50rem;
   align-items: center;
   /* justify-content: center; */
   /* gap:%; */
@@ -25,7 +25,7 @@
   font-style: normal;
   font-weight: 400;
   text-align: center;
-  font-size: 3rem;
+  font-size: 2rem;
   color: #5bc0f8;
   white-space: nowrap;
   text-decoration: underline;
@@ -37,7 +37,7 @@
   font-style: normal;
   font-weight: 400;
   text-align: center;
-  font-size: 3rem;
+  font-size: 1.5rem;
   color: #5bc0f8;
   white-space: nowrap;
   box-sizing: border-box;
@@ -48,8 +48,8 @@
 .input-name {
   border: 2% solid #5bc0f8;
   border-radius: 4%;
-  height: 20%;
-  width: 20%;
+  height: 9rem;
+  width: 15rem;
   font-family: "Inter";
   font-style: normal;
   font-weight: 400;
@@ -64,8 +64,8 @@
 
 .name-button {
   position: relative;
-  height: 10%;
-  width: 10%;
+  height: 5rem;
+  width: 9rem;
   border: 2% solid #5bc0f8;
   border-radius: 5%;
   font-family: "Inter";
@@ -85,7 +85,7 @@
   display: flex;
   flex-direction: column;
   height: 50vh;
-  width: 30%;
+  width: 40rem;
   align-items: center;
   justify-content: center;
   border-color: #5bc0f8;
@@ -169,7 +169,7 @@
   display: flex;
   flex-direction: column;
   height: 50vh;
-  width: 30%;
+  width: 30rem;
   align-items: center;
   justify-content: center;
   border-color: #5bc0f8;
@@ -229,7 +229,7 @@
   border: 2% solid #5bc0f8;
   border-radius: 4%;
   height: 30%;
-  width: 30%;
+  width: 30rem;
   font-family: "Inter";
   font-style: normal;
   font-weight: 400;
@@ -245,7 +245,7 @@
 .player-display {
   display: flex;
   flex-direction: row;
-  width: 60%;
+  width: 30rem;
   height: 40%;
   /* justify-content: center; */
   align-items: center;
@@ -254,7 +254,7 @@
 
 .player-window {
   height: 100%;
-  width: 50%;
+  width: 50rem;
   border: 0.15rem solid #5bc0f8;
   align-items: center;
   /* justify-content: center; */
@@ -264,7 +264,8 @@
   display: flex;
   flex-direction: column;
   height: 60vh;
-  width: 40%;
+  width: 40rem;
+  gap: 2rem;
   align-items: center;
   justify-content: center;
   border-color: #5bc0f8;
@@ -280,7 +281,7 @@
 
 .player-score-text {
   position: relative;
-  border: 0.15rem solid #5bc0f8;
+  /* border: 0.15rem solid #5bc0f8; */
   font-family: "Inter";
   font-style: normal;
   font-weight: 400;
@@ -308,7 +309,7 @@
 
 .player-name-text {
   position: relative;
-  border: 0.15rem solid #5bc0f8;
+  /* border: 0.15rem solid #5bc0f8; */
   font-family: "Inter";
   font-style: normal;
   font-weight: 400;
@@ -323,7 +324,7 @@
   top: -15%;
 }
 
-.turn-text {
+.timer-text {
   position: relative;
   /* border: 0.15rem solid #5bc0f8; */
   font-family: "Inter";
@@ -340,11 +341,28 @@
   top: 2%;
 }
 
+.turn-text {
+  position: relative;
+  /* border: 0.15rem solid #5bc0f8; */
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  text-align: center;
+  font-size: 2rem;
+  color: #5bc0f8;
+  white-space: nowrap;
+  box-sizing: border-box;
+  display: inline-block;
+  width: 5rem;
+  height: 5%;
+  top: 2%;
+}
+
 .choice-window {
   display: flex;
   flex-direction: row;
-  width: 70%;
-  height: 20%;
+  width: 20rem;
+  height: 30%;
   gap: 10%;
   align-items: center;
   justify-content: center;
@@ -352,8 +370,8 @@
 
 .choice-button {
   position: relative;
-  height: 65%;
-  width: 20%;
+  height: 40%;
+  width: 20rem;
   border: 2% solid #5bc0f8;
   border-radius: 5%;
   font-family: "Inter";

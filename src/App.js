@@ -49,25 +49,25 @@ function App() {
     console.log(err);
   };
 
-  useEffect(() => {
-    function windowClose(event) {
-      stompClient.send(
-        "/app/leaveGame",
-        {},
-        JSON.stringify({
-          ...RPSDInfoRef.current,
-        })
-      );
-      setState("startscr");
-      event.preventDefault();
+  // useEffect(() => {
+  //   function windowClose(event) {
+  //     stompClient.send(
+  //       "/app/leaveGame",
+  //       {},
+  //       JSON.stringify({
+  //         ...RPSDInfoRef.current,
+  //       })
+  //     );
+  //     setState("startscr");
+  //     event.preventDefault();
 
-      return (event.returnValue = "Are you sure you want to close?");
-    }
-    window.addEventListener("beforeunload", windowClose);
-    return () => {
-      window.removeEventListener("beforeunload", windowClose);
-    };
-  }, []);
+  //     return (event.returnValue = "Are you sure you want to close?");
+  //   }
+  //   window.addEventListener("beforeunload", windowClose);
+  //   return () => {
+  //     window.removeEventListener("beforeunload", windowClose);
+  //   };
+  // }, []);
 
   function playerHasLeft(payload) {
     let payloadData = JSON.parse(payload.body);
@@ -146,6 +146,12 @@ function App() {
     updatePlayers(payload);
   }
 
+  function handlePing(payload){
+    let payloadData = JSON.parse(payload.body);
+
+    stompClient.send("/app/pong", {}, JSON.stringify({...RPSDInfoRef.current}));
+
+  }
   function cancelledChallenge(payload) {
     let payloadData = JSON.parse(payload.body);
     console.log("cancelled challenge request.");
@@ -353,7 +359,7 @@ function App() {
   }
 
   const connect = () => {
-    let Sock = new SockJS("http://localhost:8080/ws");
+    let Sock = new SockJS("http://maxwellolmen.com:8121/ws");
     stompClient = over(Sock);
     stompClient.connect({}, onConnected, onError);
   };
@@ -397,6 +403,7 @@ function App() {
         startGame={startGame}
         receiveMove={receiveMove}
         playerHasLeft={playerHasLeft}
+        handlePing = {handlePing}
       />
     )) ||
     (state === "lobbyscr" && (

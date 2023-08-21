@@ -86,7 +86,7 @@ export default function GameScreen(props) {
         </div>
       ) : (
         <div className="display-background">
-          <h1 className="turn-text">
+          <h1 className="timer-text">
             Time remaining: {props.time.current} seconds
           </h1>
           <div className="player-display">
@@ -113,10 +113,12 @@ export default function GameScreen(props) {
                 {props.RPSDInfoRef.current.player2Info.name} chose{" "}
               </h1>
             </div>
+
           </div>
-          <h1 className="turn-text">
+          {/* <h1 className="turn-text">
             Turn {props.RPSDInfoRef.current.numTurns + 1}
-          </h1>
+          </h1> */}
+         
           <div className="choice-window">
             <button className="choice-button">
               <Icon
