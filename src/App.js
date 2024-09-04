@@ -359,7 +359,7 @@ function App() {
   }
 
   const connect = () => {
-    let Sock = new SockJS("http://maxwellolmen.com:8121/ws");
+    let Sock = new SockJS("http://76.141.228.122:1778/ws");
     stompClient = over(Sock);
     stompClient.connect({}, onConnected, onError);
   };
