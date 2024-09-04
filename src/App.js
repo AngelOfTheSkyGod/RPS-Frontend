@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { over } from "stompjs";
 import SockJS from "sockjs-client";
 import WelcomeScreen from "./components/WelcomeScreen";
@@ -48,26 +48,6 @@ function App() {
   const onError = (err) => {
     console.log(err);
   };
-
-  // useEffect(() => {
-  //   function windowClose(event) {
-  //     stompClient.send(
-  //       "/app/leaveGame",
-  //       {},
-  //       JSON.stringify({
-  //         ...RPSDInfoRef.current,
-  //       })
-  //     );
-  //     setState("startscr");
-  //     event.preventDefault();
-
-  //     return (event.returnValue = "Are you sure you want to close?");
-  //   }
-  //   window.addEventListener("beforeunload", windowClose);
-  //   return () => {
-  //     window.removeEventListener("beforeunload", windowClose);
-  //   };
-  // }, []);
 
   function playerHasLeft(payload) {
     let payloadData = JSON.parse(payload.body);
