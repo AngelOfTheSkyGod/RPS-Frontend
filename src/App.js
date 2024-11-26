@@ -342,14 +342,14 @@ function App() {
   }
 
   const connect = () => {
-    let Sock = new SockJS("http://76.141.228.122:1778/ws");
+    let Sock = new SockJS("http://quinonesangel.com/ws");
     stompClient = over(Sock);
     stompClient.connect({}, onConnected, onError);
   };
 
   const onConnected = () => {
+    console.log("connected to ws");
     stompClient.subscribe("/requests/newPlayer", onGlobalRequestReceived);
-
     stompClient.send("/app/global", {}, JSON.stringify({ ...RPSDInfo }));
     setState("startscr");
   };
