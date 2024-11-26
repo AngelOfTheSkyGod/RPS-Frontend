@@ -350,6 +350,7 @@ function App() {
   const onConnected = () => {
     console.log("connected to ws");
     stompClient.subscribe("/requests/newPlayer", onGlobalRequestReceived);
+    stompClient.subscribe("/requests/updatePlayers", onGlobalRequestReceived);
     stompClient.send("/app/global", {}, JSON.stringify({ ...RPSDInfo }));
     setState("startscr");
   };

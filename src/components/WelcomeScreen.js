@@ -28,11 +28,6 @@ export default function WelcomeScreen(props) {
       "/user/" + name + "/private",
       props.onPrivateRequestReceived
     );
-
-    props.stompClient.subscribe(
-      "/user/" + name + "/updatePlayers",
-      props.updatePlayers
-    );
     props.stompClient.subscribe(
       "/user/" + name + "/challenged",
       props.onChallengedPlayer
