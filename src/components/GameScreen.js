@@ -7,9 +7,10 @@ let images = {
   "": <Icon icon="ic:round-hourglass-empty" width="70%" />,
 };
 export default function GameScreen(props) {
-  const [choice, setChoice] = useState("");
+  const [madeChoice, setMadeChoice] = useState(false);
   const [state, setState] = useState(false);
   let stateRef = useRef(state);
+  let choiceRef = useRef(madeChoice);
   useEffect(() => {
     countdown();
   }, []);
@@ -24,25 +25,31 @@ export default function GameScreen(props) {
     );
     if (
       props.time.current <= 0 ||
-      (props.RPSDInfoRef.current.player1Info.name === props.name &&
+      (((props.RPSDInfoRef.current.player1Info.name === props.name &&
         props.RPSDInfoRef.current.player1Info.move !== "") ||
-      (props.RPSDInfoRef.current.player2Info.name === props.name &&
-        props.RPSDInfoRef.current.player2Info.move !== "")
+        (props.RPSDInfoRef.current.player2Info.name === props.name &&
+          props.RPSDInfoRef.current.player2Info.move !== "")) &&
+        !choiceRef.current)
     ) {
       console.log("sending player move: ", props.name);
+      setMadeChoice(true);
+      choiceRef.current = true;
       props.stompClient.send(
         "/app/private-move",
         {},
         JSON.stringify(props.RPSDInfoRef.current)
       );
-      return;
     }
     setTimeout(() => {
-      console.log("counting down!", props.time.current);
-      stateRef = !stateRef;
-      setState(!stateRef);
-      props.time.current -= 1;
-      countdown();
+      if (props.RPSDInfoRef.current.roundWinner !== "") {
+        console.log("counting down!", props.time.current);
+        stateRef = !stateRef;
+        setState(!stateRef);
+        setMadeChoice(false);
+        choiceRef.current = false;
+        props.time.current -= 1;
+        countdown();
+      }
     }, 1000);
   }
   function makeChoice(choosing) {
@@ -102,7 +109,9 @@ export default function GameScreen(props) {
       ) : (
         <div className="display-background">
           <h1 className="timer-text">
-            Time remaining: {props.time.current} seconds
+            {props.time.current > 0
+              ? `Time remaining: ${props.time.current} seconds`
+              : `Waiting for timers to sync up.`}
           </h1>
           <div className="player-display">
             <div className="player-window">
