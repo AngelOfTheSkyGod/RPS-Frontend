@@ -351,7 +351,6 @@ function App() {
     stompClient.subscribe("/requests/newPlayer", onGlobalRequestReceived);
 
     stompClient.send("/app/global", {}, JSON.stringify({ ...RPSDInfo }));
-    stompClient.send("/app/private-updatePlayers", {}, JSON.stringify({}));
     setState("startscr");
   };
 
