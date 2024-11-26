@@ -46,7 +46,6 @@ export default function GameScreen(props) {
         stateRef = !stateRef;
         setState(!stateRef);
         setMadeChoice(false);
-        choiceRef.current = false;
         props.time.current -= 1;
         countdown();
       }
@@ -95,6 +94,7 @@ export default function GameScreen(props) {
       stateRef = !stateRef;
       props.time.current = 10;
       clearTimeout(timeOutId.current); // Cancels the timeout
+      choiceRef.current = false;
       countdown();
       setState(stateRef);
     }, 3000);
