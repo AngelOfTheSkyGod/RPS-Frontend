@@ -342,7 +342,7 @@ function App() {
   }
 
   const connect = () => {
-    let Sock = new SockJS("http://quinonesangel.com/ws");
+    let Sock = new SockJS("rpsdecider.quinonesangel.com/ws");
     stompClient = over(Sock);
     stompClient.connect({}, onConnected, onError);
   };
