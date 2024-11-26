@@ -1,11 +1,11 @@
-import React, { useState, useRef } from "react";
-import { over } from "stompjs";
+import React, { useRef, useState } from "react";
 import SockJS from "sockjs-client";
-import WelcomeScreen from "./components/WelcomeScreen";
+import { over } from "stompjs";
+import GameEndScreen from "./components/GameEndScreen";
+import GameScreen from "./components/GameScreen";
 import LobbyScreen from "./components/LobbyScreen";
 import WagerScreen from "./components/WagerScreen";
-import GameScreen from "./components/GameScreen";
-import GameEndScreen from "./components/GameEndScreen";
+import WelcomeScreen from "./components/WelcomeScreen";
 var stompClient = null;
 
 function App() {
@@ -126,11 +126,14 @@ function App() {
     updatePlayers(payload);
   }
 
-  function handlePing(payload){
+  function handlePing(payload) {
     let payloadData = JSON.parse(payload.body);
 
-    stompClient.send("/app/pong", {}, JSON.stringify({...RPSDInfoRef.current}));
-
+    stompClient.send(
+      "/app/pong",
+      {},
+      JSON.stringify({ ...RPSDInfoRef.current })
+    );
   }
   function cancelledChallenge(payload) {
     let payloadData = JSON.parse(payload.body);
@@ -348,6 +351,11 @@ function App() {
     stompClient.subscribe("/requests/newPlayer", onGlobalRequestReceived);
 
     stompClient.send("/app/global", {}, JSON.stringify({ ...RPSDInfo }));
+    props.stompClient.send(
+      "/app/private-updatePlayers",
+      {},
+      JSON.stringify(newRPSDInfo)
+    );
     setState("startscr");
   };
 
@@ -383,7 +391,7 @@ function App() {
         startGame={startGame}
         receiveMove={receiveMove}
         playerHasLeft={playerHasLeft}
-        handlePing = {handlePing}
+        handlePing={handlePing}
       />
     )) ||
     (state === "lobbyscr" && (

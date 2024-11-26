@@ -7,7 +7,7 @@ export default function WelcomeScreen(props) {
   function handleName(event) {
     let { value } = event.target;
     console.log("Type of: " + value + typeof value);
-   
+
     if (value.length > 20) {
       return;
     }
@@ -28,7 +28,7 @@ export default function WelcomeScreen(props) {
       "/user/" + name + "/private",
       props.onPrivateRequestReceived
     );
-   
+
     props.stompClient.subscribe(
       "/user/" + name + "/updatePlayers",
       props.updatePlayers
@@ -63,10 +63,7 @@ export default function WelcomeScreen(props) {
       props.receiveMove
     );
 
-    props.stompClient.subscribe(
-      "/user/" + name + "/ping",
-      props.handlePing
-    );
+    props.stompClient.subscribe("/user/" + name + "/ping", props.handlePing);
     props.stompClient.subscribe("/requests/leaver", props.playerHasLeft);
 
     let newRPSDInfo = {

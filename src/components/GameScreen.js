@@ -41,6 +41,7 @@ export default function GameScreen(props) {
       );
     }
     setTimeout(() => {
+      console.log(`round winner: ${props.RPSDInfoRef.current.roundWinner}`);
       if (props.RPSDInfoRef.current.roundWinner !== "") {
         console.log("counting down!", props.time.current);
         stateRef = !stateRef;
