@@ -14,6 +14,14 @@ export default function GameScreen(props) {
     countdown();
   }, []);
   function countdown() {
+    console.log(
+      "name: ",
+      props.name,
+      "player 1 move: ",
+      props.RPSDInfoRef.current.player1Info.move,
+      "player 2 move:",
+      props.RPSDInfoRef.current.player2Info.move
+    );
     if (
       props.time.current <= 0 ||
       (props.RPSDInfoRef.current.player1Info.name === props.name &&
@@ -21,6 +29,7 @@ export default function GameScreen(props) {
       (props.RPSDInfoRef.current.player2Info.name === props.name &&
         props.RPSDInfoRef.current.player2Info.move !== "")
     ) {
+      console.log("sending player move: ", props.name);
       props.stompClient.send(
         "/app/private-move",
         {},
