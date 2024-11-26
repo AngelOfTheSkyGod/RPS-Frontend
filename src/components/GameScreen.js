@@ -11,6 +11,7 @@ export default function GameScreen(props) {
   const [state, setState] = useState(false);
   let stateRef = useRef(state);
   let choiceRef = useRef(madeChoice);
+  let timeOutId = useRef(0);
   useEffect(() => {
     countdown();
   }, []);
@@ -40,7 +41,7 @@ export default function GameScreen(props) {
         JSON.stringify(props.RPSDInfoRef.current)
       );
     }
-    setTimeout(() => {
+    timeOutId.current = setTimeout(() => {
       if (props.RPSDInfoRef.current.roundWinner === "") {
         stateRef = !stateRef;
         setState(!stateRef);
@@ -93,8 +94,9 @@ export default function GameScreen(props) {
       props.setRPSDInfo(props.RPSDInfoRef.current);
       stateRef = !stateRef;
       props.time.current = 10;
-      setState(stateRef);
+      clearTimeout(timeOutId.current); // Cancels the timeout
       countdown();
+      setState(stateRef);
     }, 3000);
   }
   return (
