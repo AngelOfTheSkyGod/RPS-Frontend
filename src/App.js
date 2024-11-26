@@ -351,11 +351,7 @@ function App() {
     stompClient.subscribe("/requests/newPlayer", onGlobalRequestReceived);
 
     stompClient.send("/app/global", {}, JSON.stringify({ ...RPSDInfo }));
-    props.stompClient.send(
-      "/app/private-updatePlayers",
-      {},
-      JSON.stringify(newRPSDInfo)
-    );
+    stompClient.send("/app/private-updatePlayers", {}, JSON.stringify({}));
     setState("startscr");
   };
 
