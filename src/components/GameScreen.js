@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useRef } from "react";
 import { Icon } from "@iconify/react";
+import React, { useEffect, useRef, useState } from "react";
 let images = {
   rock: <Icon icon="fa-regular:hand-rock" width="70%" />,
   paper: <Icon icon="fa-regular:hand-paper" width="70%" />,
@@ -14,7 +14,13 @@ export default function GameScreen(props) {
     countdown();
   }, []);
   function countdown() {
-    if (props.time.current <= 0) {
+    if (
+      props.time.current <= 0 ||
+      (props.RPSDInfoRef.current.player1Info.name === props.name &&
+        props.RPSDInfoRef.current.player1Info.move !== "") ||
+      (props.RPSDInfoRef.current.player2Info.name === props.name &&
+        props.RPSDInfoRef.current.player2Info.move !== "")
+    ) {
       props.stompClient.send(
         "/app/private-move",
         {},
@@ -113,12 +119,11 @@ export default function GameScreen(props) {
                 {props.RPSDInfoRef.current.player2Info.name} chose{" "}
               </h1>
             </div>
-
           </div>
           {/* <h1 className="turn-text">
             Turn {props.RPSDInfoRef.current.numTurns + 1}
           </h1> */}
-         
+
           <div className="choice-window">
             <button className="choice-button">
               <Icon
