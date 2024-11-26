@@ -25,12 +25,12 @@ export default function GameScreen(props) {
       props.RPSDInfoRef.current.player2Info.move
     );
     if (
-      props.time.current <= 0 ||
-      (((props.RPSDInfoRef.current.player1Info.name === props.name &&
-        props.RPSDInfoRef.current.player1Info.move !== "") ||
+      (props.time.current <= 0 ||
+        (props.RPSDInfoRef.current.player1Info.name === props.name &&
+          props.RPSDInfoRef.current.player1Info.move !== "") ||
         (props.RPSDInfoRef.current.player2Info.name === props.name &&
           props.RPSDInfoRef.current.player2Info.move !== "")) &&
-        !choiceRef.current)
+      !choiceRef.current
     ) {
       console.log("sending player move: ", props.name);
       setMadeChoice(true);
