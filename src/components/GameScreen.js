@@ -10,7 +10,7 @@ export default function GameScreen(props) {
   const [madeChoice, setMadeChoice] = useState(false);
   const [state, setState] = useState(false);
   let stateRef = useRef(state);
-  let choiceRef = useRef(madeChoice);
+  let madeChoiceRef = useRef(madeChoice);
   let timeOutId = useRef(0);
   useEffect(() => {
     countdown();
@@ -30,11 +30,11 @@ export default function GameScreen(props) {
           props.RPSDInfoRef.current.player1Info.move !== "") ||
         (props.RPSDInfoRef.current.player2Info.name === props.name &&
           props.RPSDInfoRef.current.player2Info.move !== "")) &&
-      !choiceRef.current
+      !madeChoiceRef.current
     ) {
       console.log("sending player move: ", props.name);
       setMadeChoice(true);
-      choiceRef.current = true;
+      madeChoiceRef.current = true;
       props.stompClient.send(
         "/app/private-move",
         {},
@@ -52,6 +52,9 @@ export default function GameScreen(props) {
     }, 1000);
   }
   function makeChoice(choosing) {
+    if (madeChoiceRef.current) {
+      return;
+    }
     props.RPSDInfoRef.current =
       props.RPSDInfoRef.current.player1Info.name === props.name
         ? {
@@ -94,7 +97,7 @@ export default function GameScreen(props) {
       stateRef = !stateRef;
       props.time.current = 10;
       clearTimeout(timeOutId.current); // Cancels the timeout
-      choiceRef.current = false;
+      madeChoiceRef.current = false;
       countdown();
       setState(stateRef);
     }, 3000);
